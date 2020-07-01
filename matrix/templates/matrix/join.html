@@ -1,0 +1,27 @@
+{% extends 'matrix/base.html' %}
+{% load static %}
+
+{% block content %}
+<h1>Rejoindre des salons Matrix</h1>
+<p>Bienvenue, <tt>{{ matrix_user.matrix_user }}</tt> ({{ matrix_user }})</p>
+
+<h2>Salons disponibles</h2>
+<table class="managed-rooms">
+    {% for r in rooms %}
+    <tr>
+        <td>{{r.name}}</td>
+        <td>
+            {% if r.invited %}
+                Invité!
+            {% else %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="room_id" value="{{ r.id }}"></input>
+                    <button class="btn">Rejoindre</button>
+                </form>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'matrix/base.html' %}
+{% load static %}
+
+{% block content %}
+<form method="POST">
+    {{ form.errors }}
+    {% csrf_token %}
+    <p class="form-indication">Veuillez entrer votre nom d'utilisateur Matrix</p>
+    <div class="input-group">
+        <input type="text" name="matrix_user" placeholder="@user:server.org"></input>
+        <button class="btn">Valider</button>
+    </div>
+    <p class="form-indication warning">Attention : vous devez entrer votre nom d'utilisateur complet qui commence par <tt>@</tt>, et qui est de la forme <tt>@utilisateur:server</tt></p>
+</form>
+
+{% endblock %}

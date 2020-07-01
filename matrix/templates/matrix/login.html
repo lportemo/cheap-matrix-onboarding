@@ -1,0 +1,10 @@
+{% extends 'matrix/base.html' %}
+{% load static %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        <a class="btn link-authenticated" href="#">Rejoindre les salons Matrix</a>
+    {% else %}
+        <a href="{% url 'social:begin' 'google-oauth2' %}?next={% url 'matrix:join' %}" class="btn btn-google">Se connecter avec GSuite</a>
+    {% endif %}
+{% endblock %}
