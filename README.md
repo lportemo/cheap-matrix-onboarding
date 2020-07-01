@@ -2,30 +2,30 @@
 
 A tool allowing users to get invites to private matrix channels.
 
-# Requirements
+## Requirements
 
 - A Matrix "service account" with invite privilege on the desired channels
 - A GSuite organization
 - GSuite OAuth2 credentials
 
-# Install
+## Install
 
 First, we recommend you create a python virtualenv :
 
-```(bash)
+```bash
 python -m venv .venv
 ```
 
 Then, execute the following commands :
 
-```(bash)
+```bash
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
 The app needs minimal config (`onboard/settings.py`):
 
-```(python)
+```python
 # Google Auth Backend
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'changeme'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'changeme'
@@ -38,13 +38,13 @@ MATRIX_PASSWORD = 'changeme'
 
 After the database is configured :
 
-```(bash)
+```bash
 ./manage.py migrate
 ./manage.py createsuperuser
 ```
 
 To start playing with this thing :
 
-```(bash)
+```bash
 ./manage.py runserver
 ```
