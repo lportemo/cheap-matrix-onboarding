@@ -1,0 +1,14 @@
+<nav class="navbar fixed-top navbar-dark bg-dark">
+    <div class="container">
+        <a href="#" class="navbar-brand">
+            <img src="https://prologin.org/static/img/logo_cube.png" width="30" height="30" class="d-inline-block align-top" alt="Prologin Cube Logo" loading="lazy">
+            Prologin Matrix
+        </a>
+        {% if user.is_staff %}
+        <a href="{% url 'admin:index' %}" class="btn btn-outline-success" role="button">Admin</a>
+        {% else %}
+        <span class="navbar-text">Member Onboarding Fast Track</span>
+        {% endif %}
+    </div>
+</nav>
+<br><br><br><br>

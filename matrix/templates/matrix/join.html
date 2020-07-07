@@ -2,26 +2,28 @@
 {% load static %}
 
 {% block content %}
-<h1>Rejoindre des salons Matrix</h1>
-<p>Bienvenue, <tt>{{ matrix_user.matrix_user }}</tt> ({{ matrix_user }})</p>
+{% include 'matrix/navbar.html' %}
+<h1 class="display-4">Rejoindre des salons Matrix</h1>
+<p>Bienvenue, <code>{{ matrix_user.matrix_user }}</code> ({{ matrix_user }})</p>
 
-<h2>Salons disponibles</h2>
-<table class="managed-rooms">
+<div class="list-group">
     {% for r in rooms %}
-    <tr>
-        <td>{{r.name}}</td>
-        <td>
+    <div class="list-group-item {% if r.invited %}list-group-item-success{% endif %}">
+        <div class="d-flex w-100 justify-content-between">
+            <h4 class="mb-1">{{r.name}}</h5>
             {% if r.invited %}
-                Invité!
+            <button class="btn btn-secondary" disabled>Invité</button>
+            {% endif %}
+            {% if r.invited %}
             {% else %}
-                <form method="POST">
+                <form class="form_no_margin" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="room_id" value="{{ r.id }}"></input>
-                    <button class="btn">Rejoindre</button>
+                    <button class="btn btn-primary">Rejoindre</button>
                 </form>
             {% endif %}
-        </td>
-    </tr>
+        </div>
+    </div>
     {% endfor %}
-</table>
+</div>
 {% endblock %}

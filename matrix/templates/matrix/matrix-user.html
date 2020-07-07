@@ -2,15 +2,18 @@
 {% load static %}
 
 {% block content %}
-<form method="POST">
-    {{ form.errors }}
-    {% csrf_token %}
-    <p class="form-indication">Veuillez entrer votre nom d'utilisateur Matrix</p>
-    <div class="input-group">
-        <input type="text" name="matrix_user" placeholder="@user:server.org"></input>
-        <button class="btn">Valider</button>
+{% include 'matrix/navbar.html' %}
+<div class="col-lg-6 offset-lg-3">
+    <div class="row justify-content-center text-center">
+        <p>Veuillez entrer votre nom d'utilisateur Matrix</p>
+        <form class="form-inline" method="POST">
+            {{ form.errors }}
+            {% csrf_token %}
+            <input class="form-control form-control-lg mb-2 mr-sm-2" type="text" name="matrix_user" placeholder="@user:server.org"></input><p></p>
+            <button class="btn btn-primary btn-lg mb-2 mr-sm-2">Valider</button>
+        </form>
+        <p>Attention : vous devez entrer votre nom d'utilisateur complet qui commence par <code>@</code>, et qui est de la forme <code>@utilisateur:server</code></p>
     </div>
-    <p class="form-indication warning">Attention : vous devez entrer votre nom d'utilisateur complet qui commence par <tt>@</tt>, et qui est de la forme <tt>@utilisateur:server</tt></p>
-</form>
+</div>
 
 {% endblock %}
