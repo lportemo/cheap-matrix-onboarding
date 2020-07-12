@@ -7,27 +7,53 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('matrix', '0001_initial'),
+        ("matrix", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='ManagedCommunity',
+            name="ManagedCommunity",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('community_id', models.CharField(max_length=200, unique=True)),
-                ('friendly_name', models.CharField(max_length=200)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("community_id", models.CharField(max_length=200, unique=True)),
+                ("friendly_name", models.CharField(max_length=200)),
             ],
         ),
         migrations.CreateModel(
-            name='CommunityUserInvitation',
+            name="CommunityUserInvitation",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('community', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='matrix.ManagedCommunity')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='matrix.MatrixUser')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "community",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="matrix.ManagedCommunity",
+                    ),
+                ),
+                (
+                    "user",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="matrix.MatrixUser",
+                    ),
+                ),
             ],
-            options={
-                'unique_together': {('user', 'community')},
-            },
+            options={"unique_together": {("user", "community")},},
         ),
     ]

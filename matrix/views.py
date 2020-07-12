@@ -49,7 +49,7 @@ class JoinView(LoginRequiredMixin, TemplateView):
                     "id": com.pk,
                     "invited": models.CommunityUserInvitation.objects.filter(
                         user=matrix_user, community=com
-                    ).exists()
+                    ).exists(),
                 }
             )
 
@@ -75,22 +75,27 @@ class JoinView(LoginRequiredMixin, TemplateView):
             return redirect("matrix:join")
 
         if room_id:
-            return self.post_invite(models.ManagedRoom, models.UserInvitation, matrix_user, room_id)
+            return self.post_invite(
+                models.ManagedRoom, models.UserInvitation, matrix_user, room_id
+            )
         if community_id:
-            return self.post_invite(models.ManagedCommunity, models.CommunityUserInvitation, matrix_user, community_id)
-        
+            return self.post_invite(
+                models.ManagedCommunity,
+                models.CommunityUserInvitation,
+                matrix_user,
+                community_id,
+            )
+
         return redirect("matrix:join")
 
-        
-    
     def post_invite(self, container_class, invite_class, matrix_user, cid):
         obj = None
         try:
             obj = container_class.objects.get(pk=cid)
         except container_class.DoesNotExist:
             return redirect("matrix:join")
-        
-        req_dict = {invite_class.resource_name: obj, "user":matrix_user}
+
+        req_dict = {invite_class.resource_name: obj, "user": matrix_user}
         if invite_class.objects.filter(**req_dict).exists():
             return redirect("matrix:join")
 

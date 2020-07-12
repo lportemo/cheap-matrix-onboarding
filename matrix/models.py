@@ -12,6 +12,7 @@ class ManagedRoom(models.Model):
     def __str__(self):
         return self.name
 
+
 class ManagedCommunity(models.Model):
     community_id = models.CharField(unique=True, max_length=200)
     friendly_name = models.CharField(max_length=200)
@@ -53,6 +54,7 @@ class UserInvitation(models.Model):
     class Meta:
         unique_together = [["user", "room"]]
 
+
 class CommunityUserInvitation(models.Model):
     user = models.ForeignKey(MatrixUser, on_delete=models.CASCADE)
     community = models.ForeignKey(ManagedCommunity, on_delete=models.CASCADE)
@@ -63,11 +65,11 @@ class CommunityUserInvitation(models.Model):
         r = requests.put(
             f"https://{settings.MATRIX_HOMESERVER}/_matrix/client/r0/groups/{self.community.community_id}/admin/users/invite/{self.user.matrix_user}",
             params={"access_token": access_token},
-            json={}
+            json={},
         )
-    
+
     def __str__(self):
         return f"{self.user} in {self.community}"
-    
+
     class Meta:
         unique_together = [["user", "community"]]

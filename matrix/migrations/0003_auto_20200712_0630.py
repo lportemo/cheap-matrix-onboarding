@@ -6,12 +6,12 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('matrix', '0002_communityuserinvitation_managedcommunity'),
+        ("matrix", "0002_communityuserinvitation_managedcommunity"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='managedcommunity',
-            options={'verbose_name_plural': 'Managed communities'},
+            name="managedcommunity",
+            options={"verbose_name_plural": "Managed communities"},
         ),
     ]

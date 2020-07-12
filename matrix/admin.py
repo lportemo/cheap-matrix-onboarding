@@ -6,6 +6,7 @@ from . import models
 class ManagedCommunityAdmin(admin.ModelAdmin):
     list_display = ("friendly_name", "community_id")
 
+
 @admin.register(models.ManagedRoom)
 class ManagedRoomAdmin(admin.ModelAdmin):
     list_display = ("room_id", "name")
@@ -22,7 +23,8 @@ class UserInvitationAdmin(admin.ModelAdmin):
     list_display = ("user", "room")
     list_filter = ("room",)
 
+
 @admin.register(models.CommunityUserInvitation)
 class CommunityUserInvitationInvitation(admin.ModelAdmin):
     list_display = ("user", "community")
-    list_filter = ("community", )
+    list_filter = ("community",)
