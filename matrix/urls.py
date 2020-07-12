@@ -9,5 +9,5 @@ urlpatterns = [
     path("", RedirectView.as_view(url=reverse_lazy("matrix:join"))),
     path("login", TemplateView.as_view(template_name="matrix/login.html")),
     path("matrix-user", views.UserCreationView.as_view(), name="matrix-user"),
-    path("join", views.RoomJoinView.as_view(), name="join"),
+    path("join", views.JoinView.as_view(), name="join"),
 ]

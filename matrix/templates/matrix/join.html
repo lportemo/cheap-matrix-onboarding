@@ -3,9 +3,34 @@
 
 {% block content %}
 {% include 'matrix/navbar.html' %}
-<h1 class="display-4">Rejoindre des salons Matrix</h1>
+
 <p>Bienvenue, <code>{{ matrix_user.matrix_user }}</code> ({{ matrix_user }})</p>
 
+<h1 class="display-5">Rejoindre des communautés Matrix</h1>
+<br>
+<div class="list-group">
+    {% for c in communities %}
+    <div class="list-group-item {% if c.invited %}list-group-item-success{% endif %}">
+        <div class="d-flex w-100 justify-content-between">
+            <h4 class="mb-1">{{c.name}}</h4>
+            {% if c.invited %}
+            <button class="btn btn-secondary" disabled>Invité!</button>
+            {% else %}
+            <form action="" method="POST" class="form_no_margin">
+                {% csrf_token %}
+                <input type="hidden" name="community_id" value="{{ c.id }}">
+                <button class="btn btn-primary">Rejoindre</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<br><br>
+
+<h1 class="display-5">Rejoindre des salons Matrix</h1>
+<br>
 <div class="list-group">
     {% for r in rooms %}
     <div class="list-group-item {% if r.invited %}list-group-item-success{% endif %}">
@@ -13,8 +38,6 @@
             <h4 class="mb-1">{{r.name}}</h5>
             {% if r.invited %}
             <button class="btn btn-secondary" disabled>Invité</button>
-            {% endif %}
-            {% if r.invited %}
             {% else %}
                 <form class="form_no_margin" method="POST">
                     {% csrf_token %}

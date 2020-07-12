@@ -22,7 +22,7 @@ class UserCreationView(LoginRequiredMixin, CreateView):
         return super(UserCreationView, self).form_valid(form)
 
 
-class RoomJoinView(LoginRequiredMixin, TemplateView):
+class JoinView(LoginRequiredMixin, TemplateView):
     template_name = "matrix/join.html"
     http_method_names = ["get", "post"]
 
@@ -30,6 +30,7 @@ class RoomJoinView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
 
         matrix_user = models.MatrixUser.objects.get(user=self.request.user.pk)
+        communities = []
         rooms = []
         for room in models.ManagedRoom.objects.all():
             rooms.append(
@@ -41,9 +42,20 @@ class RoomJoinView(LoginRequiredMixin, TemplateView):
                     ).exists(),
                 }
             )
+        for com in models.ManagedCommunity.objects.all():
+            communities.append(
+                {
+                    "name": com.friendly_name,
+                    "id": com.pk,
+                    "invited": models.CommunityUserInvitation.objects.filter(
+                        user=matrix_user, community=com
+                    ).exists()
+                }
+            )
 
         context["matrix_user"] = matrix_user
         context["rooms"] = rooms
+        context["communities"] = communities
         return context
 
     def dispatch(self, request, *args, **kwargs):
@@ -52,25 +64,37 @@ class RoomJoinView(LoginRequiredMixin, TemplateView):
             and not models.MatrixUser.objects.filter(user=self.request.user.pk).exists()
         ):
             return redirect("matrix:matrix-user")
-        return super(RoomJoinView, self).dispatch(request, *args, **kwargs)
+        return super(JoinView, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         room_id = request.POST.get("room_id", False)
+        community_id = request.POST.get("community_id", False)
         matrix_user = models.MatrixUser.objects.get(user=self.request.user.pk)
-        if not room_id:
-            return redirect("")
-        room = None
+
+        if community_id == room_id:
+            return redirect("matrix:join")
+
+        if room_id:
+            return self.post_invite(models.ManagedRoom, models.UserInvitation, matrix_user, room_id)
+        if community_id:
+            return self.post_invite(models.ManagedCommunity, models.CommunityUserInvitation, matrix_user, community_id)
+        
+        return redirect("matrix:join")
+
+        
+    
+    def post_invite(self, container_class, invite_class, matrix_user, cid):
+        obj = None
         try:
-            room = models.ManagedRoom.objects.get(pk=room_id)
-        except models.ManagedRoom.DoesNotExist:
+            obj = container_class.objects.get(pk=cid)
+        except container_class.DoesNotExist:
+            return redirect("matrix:join")
+        
+        req_dict = {invite_class.resource_name: obj, "user":matrix_user}
+        if invite_class.objects.filter(**req_dict).exists():
             return redirect("matrix:join")
 
-        if models.UserInvitation.objects.filter(room=room, user=matrix_user).exists():
-            return redirect("matrix:join")
-
-        invite = models.UserInvitation()
-        invite.room = room
-        invite.user = matrix_user
+        invite = invite_class(**req_dict)
         invite.save()
         invite.emit_invitation()
         return redirect("matrix:join")

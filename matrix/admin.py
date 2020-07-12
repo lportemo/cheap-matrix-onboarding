@@ -2,6 +2,10 @@ from django.contrib import admin
 from . import models
 
 # Register your models here.
+@admin.register(models.ManagedCommunity)
+class ManagedCommunityAdmin(admin.ModelAdmin):
+    list_display = ("friendly_name", "community_id")
+
 @admin.register(models.ManagedRoom)
 class ManagedRoomAdmin(admin.ModelAdmin):
     list_display = ("room_id", "name")
@@ -17,3 +21,8 @@ class MatrixUserAdmin(admin.ModelAdmin):
 class UserInvitationAdmin(admin.ModelAdmin):
     list_display = ("user", "room")
     list_filter = ("room",)
+
+@admin.register(models.CommunityUserInvitation)
+class CommunityUserInvitationInvitation(admin.ModelAdmin):
+    list_display = ("user", "community")
+    list_filter = ("community", )
