@@ -1,4 +1,5 @@
 from django.conf import settings
+from . import models
 import requests
 
 
@@ -17,3 +18,11 @@ def get_access_token():
         return False
 
     return access_token
+
+
+def reinvite(modeladmin, request, queryset):
+    for invite in queryset:
+        invite.emit_invitation()
+
+
+reinvite.short_description = "Emit invites for selected users"

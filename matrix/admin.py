@@ -1,4 +1,5 @@
 from django.contrib import admin
+from . import helpers
 from . import models
 
 # Register your models here.
@@ -21,10 +22,12 @@ class MatrixUserAdmin(admin.ModelAdmin):
 @admin.register(models.UserInvitation)
 class UserInvitationAdmin(admin.ModelAdmin):
     list_display = ("user", "room")
-    list_filter = ("room",)
+    list_filter = ("room", "user")
+    actions = [helpers.reinvite]
 
 
 @admin.register(models.CommunityUserInvitation)
 class CommunityUserInvitationInvitation(admin.ModelAdmin):
     list_display = ("user", "community")
-    list_filter = ("community",)
+    list_filter = ("community", "user")
+    actions = [helpers.reinvite]
