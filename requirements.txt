@@ -4,7 +4,7 @@ cffi==1.14.0
 chardet==3.0.4
 cryptography==2.9.2
 defusedxml==0.7.0rc1
-Django==3.1.1
+Django==3.1.12
 ecdsa==0.15
 idna==2.10
 isodate==0.6.0
